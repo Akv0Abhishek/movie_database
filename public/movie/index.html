@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Opening Movie Recommendation App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 20%;
+        color: #333;
+        padding: 20px;
+      }
+      a {
+        color: #007BFF;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: #007BFF;
+        color: white;
+        border-radius: 5px;
+      }
+      a:hover {
+        background: #0056b3;
+      }
+      .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #007BFF;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+    <script type="text/javascript">
+      (function() {
+        // Extract movie ID from URL path
+        const pathSegments = window.location.pathname.split('/').filter(seg => seg);
+        const movieId = pathSegments[pathSegments.length - 1] || '';
+        
+        // Try to open the app using custom URL scheme as fallback
+        // This will only work if App Links fail and user has the app installed
+        function tryOpenApp() {
+          if (movieId) {
+            // Try Android Intent URL
+            const intentUrl = "intent://movie/" + movieId + "#Intent;scheme=moviesapp;package=com.example.movie_recommendation;end";
+            window.location.href = intentUrl;
+          }
+        }
+        
+        // Only redirect to Play Store after a longer delay
+        // With proper App Links, the app should open immediately, so this is just a fallback
+        let redirectTimer;
+        let redirected = false;
+        
+        function redirectToStore() {
+          if (!redirected && document.visibilityState === 'visible') {
+            redirected = true;
+            const playStoreUrl = "https://play.google.com/store/apps/details?id=com.example.movie_recommendation";
+            window.location.replace(playStoreUrl);
+          }
+        }
+        
+        // Try opening app immediately (as fallback)
+        setTimeout(tryOpenApp, 500);
+        
+        // Redirect to store after 7 seconds if still on page
+        redirectTimer = setTimeout(redirectToStore, 7000);
+        
+        // Clear redirect if user leaves page (app opened)
+        window.addEventListener('blur', function() {
+          clearTimeout(redirectTimer);
+        });
+        
+        // Also try on page visibility change
+        document.addEventListener('visibilitychange', function() {
+          if (document.hidden) {
+            clearTimeout(redirectTimer);
+          }
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <h2>🎬 Opening the Movie Recommendation App...</h2>
+    <div class="spinner"></div>
+    <p>If the app doesn't open automatically, please ensure it's installed.</p>
+    <p>
+      <a href="https://play.google.com/store/apps/details?id=com.example.movie_recommendation">
+        Get the app from the Play Store
+      </a>
+    </p>
+  </body>
+</html>
