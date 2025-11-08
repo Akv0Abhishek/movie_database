@@ -23,14 +23,14 @@ class HomePage extends StatelessWidget {
 
           if (vm.error != null) {
             return Scaffold(
-              appBar: AppBar(title: const Text('Movies App')),
+              appBar: AppBar(title: const Text('ReelRadar')),
               body: Center(child: Text('Error: ${vm.error}')),
             );
           }
 
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Movies App'),
+              title: const Text('ReelRadar'),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.search),

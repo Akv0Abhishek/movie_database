@@ -32,7 +32,6 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-constants.dart
 /public/.well-known/
 
 # Symbolication related
@@ -46,5 +45,9 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-IOS_DEEP_LINKING_SETUP.md
-README.md
+*.md
+
+# Environment variables
+.env
+.env.local
+.env.*.local

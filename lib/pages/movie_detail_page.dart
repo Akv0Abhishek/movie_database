@@ -65,7 +65,13 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           title: Text(_movie?.title ?? 'Movie Detail'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => context.pop(),
+            onPressed: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.go('/');
+              }
+            },
           ),
           actions: [
             IconButton(onPressed: _share, icon: const Icon(Icons.share)),
